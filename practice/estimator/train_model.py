@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: baiyunhan
 # @Date:   2019-03-22 23:18:32
-# @Last Modified by:   bai
-# @Last Modified time: 2019-03-24 20:33:15
+# @Last Modified by:   baiyunhan
+# @Last Modified time: 2019-03-25 17:00:03
 
 import tensorflow as tf
 import model as model
@@ -46,13 +46,13 @@ flags.DEFINE_integer("save_checkpoints_steps", 1000,
 
 
 def model_fn_builder(feature_size,learning_rate):
-	model_config = {}
+    model_config = {}
     def model_fn(features, labels, mode, params):  # pylint: disable=unused-argument
         tf.logging.info("*** Features ***")
         feature = features['feature']
         model_example = model.ModelExample(model_config=model_config, input=feature)
         if mode == tf.estimator.ModeKeys.PREDICT:
-        	# 这是单个output的情况，如果有多个，其中一个的key必须是signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY.
+            # 这是单个output的情况，如果有多个，其中一个的key必须是signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY.
             export_outputs = {
                 'predict_output': tf.estimator.export.PredictOutput({
                     'output': model_example.output
@@ -89,7 +89,7 @@ def model_fn_builder(feature_size,learning_rate):
     return model_fn
 
 def recviver_fn_builder(feature_size):
-	# For serving
+    # For serving
     def serving_input_receiver_fn():
         input = tf.placeholder(dtype=tf.int64, shape=[None, feature_size], name='feature')
         # 这里可以有一些数据预处理，建议和训练时的预处理复用代码，避免错误
